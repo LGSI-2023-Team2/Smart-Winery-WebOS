@@ -1,0 +1,57 @@
+.modal-container {
+    width: 80vw;
+    height: 70vh;
+}
+.modal-layout {
+    height: 50vh;
+    display: flex;
+    flex-direction: row;
+}
+.mode-cellar-status {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5vh;
+    margin-left: auto;
+}
+.matrix-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 3vw;
+    margin-bottom: 5vh;
+}
+.matrix-button {
+    width: 8vw;
+    height: 8vw;
+    font-size: 1vw;
+}
+.modal-move-apply-btn {
+    margin-left: auto;
+}
+.modal-mode-category {
+    display: flex;
+    flex-direction: row;
+}
+.modal-mode-panel {
+    display: flex;
+    flex-direction: column;
+    margin-right: 1vw;
+}
+.modal-mode-panel-text {
+    display: flex;
+    height: 8vw;
+    justify-content: center;
+    align-items: center;
+}
+.red {
+  color: #e1777e;
+}
+
+.yellow {
+  color: #d3b85f;
+}
+
+.green {
+  color: #7fd563;
+}

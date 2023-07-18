@@ -1,0 +1,84 @@
+.modal-container {
+    width: 80vw;
+    height: 70vh;
+}
+.modal-layout {
+    height: 50vh;
+    display: flex;
+    flex-direction: row;
+}
+.modal-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5vw;
+}
+.image-style {
+    width: 15vw;
+}
+.modal-content {
+    width: 60vw;
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+}
+.modal-content-title h2 {
+    margin: 0;
+    padding-top: 1vh;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.modal-content-aroma {
+    margin-top: 2vh;
+}
+.modal-content-pairing {
+    margin-top: 2vh;
+}
+.modal-content-inf-box {
+    margin-top: 1vh;
+}
+.modal-content-inf {
+    font-size: 2.5vh;
+    margin: 1vh;
+}
+.modal-content-btn {
+    margin-top: auto;
+    margin-left: auto;
+}
+.star {
+  color: #ccc;
+}
+
+.filled {
+  color: #ffcc00;
+}
+.rating {
+    font-size: 2vh;
+    margin-right: 1vw;
+    margin-left: 1vw;
+}
+.rating-name {
+    margin: 0.5vh;
+}
+.modal-content-rating-box {
+    display: flex;
+    flex-direction: row;
+}
+.item-box {
+    width: 8vw;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5vh;
+}
+.item-layout {
+    margin-top: 2vh;
+    margin-left: 1vw;
+    display: flex;
+    flex-direction: row;
+    gap: 1vw;
+    font-size: 1.2vw;
+}

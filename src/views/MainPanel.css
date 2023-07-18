@@ -1,0 +1,96 @@
+.main-container {
+    margin: auto;
+    display: flex;
+    grid-template-columns: 40% 60%;
+    gap: 10vh; /* 구역간의 간격 */
+  }
+  .contents-box {
+    margin-left: -2vw;
+    width: 100%;
+    height: 100%;
+    font-size: 40px;
+    gap: 50px; /* 구역간의 간격 */
+    display: flex;
+    flex-direction: row;
+  }
+  .wine-box {
+    background-color: white;
+    width: 10vw;
+    margin: 0.1vw;
+    display: flex;
+    justify-content: center;
+  }
+  .mode-container {
+    font-size: 2.5vw;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    border: none;
+  }
+  .wine-container {
+    font-size: 2.5vw;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    border: none;
+  }
+  .temp-container {
+    font-size: 2vw;
+    display: flex;
+    width: 15vw;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
+  .wine-layout {
+    display: flex;
+    flex-direction: row;
+    height: 24vh;
+  }
+  .mode-box {
+    display: flex;
+    height: 24vh;
+    justify-content: center;
+    align-items: center;
+  }
+  .temp-content {
+    display: flex;
+    flex-direction: column;
+    height: 24vh;
+    justify-content: center;
+    align-items: center;
+  }
+  .temp-text {
+    padding: 1vw;
+  }
+  .image {
+    width: 7vw;
+  }
+  .setting-icon {
+    margin-bottom: -1.7vh;
+    font-size: 3vw;
+  }
+  .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.modal-content {
+  margin-bottom: 10px;
+}

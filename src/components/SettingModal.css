@@ -1,0 +1,50 @@
+.modal-container {
+    width: 80vw;
+    height: 70vh;
+}
+.modal-content-container {
+    margin: auto;
+    display: flex;
+    grid-template-columns: 40% 60%;
+    gap: 5vh; /* 구역간의 간격 */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.modal-contents-box {
+    width: 100%;
+    height: 100%;
+    font-size: 40px;
+    gap: 25vw; /* 구역간의 간격 */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.modal-floor-box {
+    height: 15vh;
+    font-size: 2vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+.modal-mode-onoff-btn {
+    width: 30vw;
+}
+
+.modal-mode-change-btn {
+    width: 30vw;
+}
+
+.modal-temp-box {
+    width: 20vw;
+}
+
+.modal-temp-content {
+    padding: 0.5vh;
+}
+
+.modal-apply-btn {
+  text-align: right;
+}
