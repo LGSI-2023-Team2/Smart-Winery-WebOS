@@ -1,8 +1,9 @@
 import { Button } from '@enact/sandstone/Button';
 import Popup from '@enact/sandstone/Popup';
+import Alert from '@enact/sandstone/Alert';
 
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import './MoveWineModal.css'
 import axios from 'axios';
@@ -31,10 +32,10 @@ const MatrixRow = ({ row, wineArray, selectedSpace, handleSpaceClick }) => (
 function Modal({ onClose, wineArray, cellar_id, nowMode, isSmart  }) {
     const [selectedWine, setSelectedWine] = useState(null);
     const [selectedSpace, setSelectedSpace] = useState(null);
+    const [alert, setAlert] = useState(false);
+    const [condition, setCondition] = useState(false);
     const modeMappings = ['None', 'Red', 'White', 'Sparkling'];
     let flag = true;
-
-    console.log(wineArray);
 
     const handleWineClick = (wine) => {
         setSelectedWine(wine);
@@ -45,8 +46,9 @@ function Modal({ onClose, wineArray, cellar_id, nowMode, isSmart  }) {
         setSelectedSpace(space);
     };
 
-    console.log(isSmart, nowMode, selectedWine)
-
+    const closeAlert = () => {
+        setAlert(false);
+    }
 
     const getModeText = (modeType) => {
         const modeText = modeMappings[modeType] || 'Unknown';
@@ -55,16 +57,18 @@ function Modal({ onClose, wineArray, cellar_id, nowMode, isSmart  }) {
 
     const applyChange = () => {
         if (selectedWine === null || selectedSpace===null) {
-            console.log("choose wine or space")
+            setCondition(false);
+            setAlert(true);
         }
         else {
-            if (isSmart[selectedWine.row - 1] === true) {
+            if (isSmart[selectedSpace.row - 1] === true) {
                 if (selectedWine.wine_id.type != getModeText(nowMode[selectedSpace.row])) {
                     flag = false;
-                    console.log("You can't move in different type floor")
+                    setCondition(true);
+                    setAlert(true);
                 }
             }
-
+            
             if (flag) {
                 //Wine Move POST
                 axios.post(`${DATABASE_IP}:3000/winecellar/move`, {
@@ -149,6 +153,35 @@ function Modal({ onClose, wineArray, cellar_id, nowMode, isSmart  }) {
                     </div>
                     <div className="modal-move-apply-btn">
                         <Button onClick={applyChange}>Apply</Button>
+                        {alert && (
+                            <Alert open={alert} type='overlay'>
+                                {condition ? (
+                                    <div className="alert-msg">
+                                        You can't move in different type floor
+                                        <div className="alert-msg-btn">
+                                            <Button
+                                                onClick={closeAlert}
+                                                backgroundOpacity="transparent"
+                                                size="small"
+                                                icon="closex"
+                                            />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="alert-msg">
+                                        Choose Wine or Space to Move
+                                        <div className="alert-msg-btn">
+                                            <Button
+                                                onClick={closeAlert}
+                                                backgroundOpacity="transparent"
+                                                size="small"
+                                                icon="closex"
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+                            </Alert>
+                        )}
                     </div>
                 </div>
             </div>

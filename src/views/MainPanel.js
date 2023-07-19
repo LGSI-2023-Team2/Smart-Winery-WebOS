@@ -16,7 +16,7 @@ import { DATABASE_IP } from '../database';
 
 const tempImageUrl = "https://wine21.speedgabia.com/no_image2.jpg";
 
-const SettingButton = ({ isSmart, setSmart, nowTargetValue, setNowTargetValue, nowMode, setNowMode, cellar_id }) => {
+const SettingButton = ({ wine, isSmart, setSmart, nowTargetValue, setNowTargetValue, nowMode, setNowMode, cellar_id }) => {
 	const [isModalOpen, setModalOpen] = useState(false);
 
 	const handleOpenModal = () => {
@@ -36,6 +36,7 @@ const SettingButton = ({ isSmart, setSmart, nowTargetValue, setNowTargetValue, n
 				icon="gear"
 			/>
 			<SettingModal
+				wine={wine}
 				isSmart={isSmart}
 				setSmart={setSmart}
 				isOpen={isModalOpen}
@@ -268,6 +269,7 @@ const MainPanel = () => {
 				<slotAfter>
 					<EditButton wine={wines} cellar_id={cellarId} nowMode={nowMode} isSmart={isSmart}/>
 					<SettingButton
+						wine={wines}
 						isSmart={isSmart}
 						setSmart={setSmart}
 						nowSetValue={nowSetValue}

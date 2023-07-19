@@ -47,11 +47,22 @@
 .red {
   color: #e1777e;
 }
-
 .yellow {
   color: #d3b85f;
 }
-
 .green {
   color: #7fd563;
+}
+.default-color {
+    color: azure;
+}
+.alert-msg {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5vw;
+}
+.alert-msg-btn {
+    margin-left: auto;
 }

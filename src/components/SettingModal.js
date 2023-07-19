@@ -1,23 +1,40 @@
 import { Button } from '@enact/sandstone/Button';
+import { Alert } from '@enact/sandstone/Alert';
 import Switch from '@enact/sandstone/Switch';
 import Dropdown from '@enact/sandstone/Dropdown';
 import Popup from '@enact/sandstone/Popup';
 
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import './SettingModal.css'
 import { DATABASE_IP } from '../database';
 
-function Modal({ isSmart, setSmart, onClose, nowTargetValue, setNowTargetValue, nowMode, setNowMode, cellar_id }) {
+function Modal({ wine, isSmart, onClose, nowTargetValue, nowMode, cellar_id }) {
     const [temp, setTemp] = useState(nowTargetValue)
     const [mode, setMode] = useState(nowMode)
     const [isSmartMode, setSmartMode] = useState(isSmart)
+    const [canChangeMode, setCanChangeMode] = useState()
+
+    console.log(wine)
+
+    useEffect(() => {
+        const initializeCanChangeMode = () => {
+            const rows = new Set(wine.map((w) => w.row));
+            const initialCanChangeMode = Array.from(rows).map((row) => {
+                const typesInRow = new Set(wine.filter((w) => w.row === row).map((w) => w.wine_id.type));
+                return typesInRow.size === 1;
+            });
+            setCanChangeMode(initialCanChangeMode);
+        };
+
+        initializeCanChangeMode();
+    }, [wine]);
 
     const applyChanges = () => {
+        //만약 smart off -> on이 켜질 때 오류창 생성
         //Wine Cellar POST
-        console.log(cellar_id, temp,mode,isSmartMode)
         axios.post(`${DATABASE_IP}:3000/winecellar/setting`, {
             cellarid: cellar_id,
             floor1_type: mode[0],
@@ -43,9 +60,6 @@ function Modal({ isSmart, setSmart, onClose, nowTargetValue, setNowTargetValue, 
             // 요청 실패 시 처리할 코드
             console.error(error);
         });
-        setNowTargetValue(temp);
-        setNowMode(mode);
-        setSmart(isSmartMode)
         onClose(); // 모달 닫기
     };
 
@@ -54,9 +68,9 @@ function Modal({ isSmart, setSmart, onClose, nowTargetValue, setNowTargetValue, 
             <div>
                 <h2>Setting</h2>
                 <div className="modal-content-container">
-                    <RenderContentsBox smart={isSmartMode} setSmart={setSmartMode} setTemperature={setTemp} setMode={setMode} temperature={temp} mode={mode} idx={0} />
-                    <RenderContentsBox smart={isSmartMode} setSmart={setSmartMode} setTemperature={setTemp} setMode={setMode} temperature={temp} mode={mode} idx={1} />
-                    <RenderContentsBox smart={isSmartMode} setSmart={setSmartMode} setTemperature={setTemp} setMode={setMode} temperature={temp} mode={mode} idx={2} />
+                    <RenderContentsBox canChangeMode={canChangeMode} smart={isSmartMode} setSmart={setSmartMode} setTemperature={setTemp} setMode={setMode} temperature={temp} mode={mode} idx={0} />
+                    <RenderContentsBox canChangeMode={canChangeMode} smart={isSmartMode} setSmart={setSmartMode} setTemperature={setTemp} setMode={setMode} temperature={temp} mode={mode} idx={1} />
+                    <RenderContentsBox canChangeMode={canChangeMode} smart={isSmartMode} setSmart={setSmartMode} setTemperature={setTemp} setMode={setMode} temperature={temp} mode={mode} idx={2} />
                 </div>
                 <div className="modal-apply-btn">
                     <Button onClick={applyChanges}>Apply</Button>
@@ -66,15 +80,28 @@ function Modal({ isSmart, setSmart, onClose, nowTargetValue, setNowTargetValue, 
     );
 }
 
-function RenderContentsBox({ smart, setSmart, setTemperature, setMode, temperature, mode, idx }) {
+function RenderContentsBox({ canChangeMode, smart, setSmart, setTemperature, setMode, temperature, mode, idx }) {
+    const [alert, setAlert] = useState(false);
 
     const handleToggle = (e) => {
-        setSmart(prevSmart => {
-            const newSmart = [...prevSmart];
-            newSmart[idx] = !newSmart[idx];
-            return newSmart;
-        });
+        //여기서 체크
+        console.log(canChangeMode)
+        if (canChangeMode[idx]) {
+            setSmart(prevSmart => {
+                const newSmart = [...prevSmart];
+                newSmart[idx] = !newSmart[idx];
+                return newSmart;
+            });
+        }
+        else {
+            //경고창 띄우기
+            setAlert(true);
+        }
     };
+
+    const closeAlert = () => {
+        setAlert(false);
+    }
 
     return (
         <div className="modal-contents-box">
@@ -82,6 +109,19 @@ function RenderContentsBox({ smart, setSmart, setTemperature, setMode, temperatu
                 <div className="modal-mode-onoff-btn">
                     <span>
                         <Switch onToggle={handleToggle} selected={smart[idx]} />
+                        {alert && (
+                            <Alert open={alert} type='overlay'>
+                                Can't Change (Floor is Mixed)
+                                <buttons>
+                                    <Button
+                                        onClick={closeAlert}
+                                        backgroundOpacity="transparent"
+                                        size="small"
+                                        icon="closex"
+                                    />
+                                </buttons>
+                            </Alert>
+                        )}
                     </span>
                     <span>{smart[idx] ? <span>Smart Mode On</span> : <span>Smart Mode Off</span>}</span>
                 </div>
@@ -161,10 +201,10 @@ function ChangeTemp({ isOn, temperature, setTemperature, idx }) {
 }
 
 
-const SettingModal = ({ isSmart, setSmart, isOpen, onClose, nowTargetValue, setNowTargetValue, nowMode, setNowMode, cellar_id}) => {
+const SettingModal = ({ wine, isSmart, isOpen, onClose, nowTargetValue, nowMode, cellar_id}) => {
     return (
         <Popup open={isOpen} onClose={onClose} position="center">
-            <Modal isSmart={isSmart} setSmart={setSmart} nowTargetValue={nowTargetValue} setNowTargetValue={setNowTargetValue} nowMode={nowMode} setNowMode={setNowMode} onClose={onClose} cellar_id={cellar_id}/>
+            <Modal wine={wine} isSmart={isSmart} nowTargetValue={nowTargetValue} nowMode={nowMode} onClose={onClose} cellar_id={cellar_id}/>
         </Popup>
     );
 };
