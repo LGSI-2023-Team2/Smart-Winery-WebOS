@@ -15,22 +15,39 @@ function Modal({ wine, isSmart, onClose, nowTargetValue, nowMode, cellar_id }) {
     const [temp, setTemp] = useState(nowTargetValue)
     const [mode, setMode] = useState(nowMode)
     const [isSmartMode, setSmartMode] = useState(isSmart)
-    const [canChangeMode, setCanChangeMode] = useState()
-
-    console.log(wine)
+    const [canChangeMode, setCanChangeMode] = useState([4, 4, 4]);
 
     useEffect(() => {
         const initializeCanChangeMode = () => {
-            const rows = new Set(wine.map((w) => w.row));
-            const initialCanChangeMode = Array.from(rows).map((row) => {
-                const typesInRow = new Set(wine.filter((w) => w.row === row).map((w) => w.wine_id.type));
-                return typesInRow.size === 1;
+            const rowTypeMap = wine.reduce((map, w) => {
+                const { row, wine_id: { type } } = w;
+                if (!map[row]) {
+                    map[row] = new Set();
+                }
+                map[row].add(type);
+                return map;
+            }, {});
+
+            const initialCanChangeMode = [1, 2, 3].map((row) => {
+                if (rowTypeMap[row]) {
+                    const typesInRow = Array.from(rowTypeMap[row]);
+                    if (typesInRow.length === 1) {
+                        const type = typesInRow.values().next().value;
+                        return type === "Red" ? 1 : type === "White" ? 2 : type === "Sparkling" ? 3 : 0;
+                    } else if (typesInRow.length > 1) {
+                        return 0;
+                    }
+                }
+                return 4;
             });
+
             setCanChangeMode(initialCanChangeMode);
         };
 
         initializeCanChangeMode();
     }, [wine]);
+
+
 
     const applyChanges = () => {
         //만약 smart off -> on이 켜질 때 오류창 생성
@@ -85,7 +102,6 @@ function RenderContentsBox({ canChangeMode, smart, setSmart, setTemperature, set
 
     const handleToggle = (e) => {
         //여기서 체크
-        console.log(canChangeMode)
         if (canChangeMode[idx]) {
             setSmart(prevSmart => {
                 const newSmart = [...prevSmart];
@@ -126,7 +142,7 @@ function RenderContentsBox({ canChangeMode, smart, setSmart, setTemperature, set
                     <span>{smart[idx] ? <span>Smart Mode On</span> : <span>Smart Mode Off</span>}</span>
                 </div>
                 <div className="modal-mode-change-btn">
-                    <ChangeModeButton isOn={smart[idx]} mode={mode} setMode={setMode} idx={idx} />
+                    <ChangeModeButton isOn={smart[idx]} canChangeMode={canChangeMode} mode={mode} setMode={setMode} idx={idx} />
                 </div>
                 <div className="modal-temp-box">
                     <ChangeTemp isOn={smart[idx]} temperature={temperature} setTemperature={setTemperature} idx={idx}/>
@@ -136,22 +152,32 @@ function RenderContentsBox({ canChangeMode, smart, setSmart, setTemperature, set
     );
 }
 
-//해당 함수에서는 Dropbox가 0번째 인덱스부터 선택되기 때문에 보정하는 과정이 들어갑니다.
-function ChangeModeButton({ isOn, mode, setMode, idx }) {
-    const [selected, setSelected] = useState(mode[idx] -1 );
+function ChangeModeButton({ isOn, canChangeMode, mode, setMode, idx }) {
+    const [selected, setSelected] = useState();
+
+    useEffect(() => {
+        setSelected(canChangeMode[idx]-1);
+        if (canChangeMode[idx] != 4) {
+            setMode(prevMode => {
+                const newMode = [...prevMode];
+                newMode[idx] = canChangeMode[idx];
+                return newMode;
+            });
+        }
+    }, [canChangeMode]);
 
     const handleChange = (e) => {
         setSelected(e.selected);
         setMode(prevMode => {
             const newMode = [...prevMode];
-            newMode[idx] = e.selected + 1;
+            newMode[idx] = e.selected+1;
             return newMode;
         });
     };
 
     return (
         <div>
-            <Dropdown inline title="Mode" disabled={!isOn} defaultSelected={selected} selected={selected} onSelect={handleChange}>
+            <Dropdown inline title="Mode" disabled={!isOn || canChangeMode[idx] != 4} defaultSelected={selected} selected={selected} onSelect={handleChange}>
                 {['Red', 'White', 'Sparkling']}
             </Dropdown>
         </div>

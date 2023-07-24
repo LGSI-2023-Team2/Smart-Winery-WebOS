@@ -1,0 +1,89 @@
+.modal-close-btn {
+    margin-left: auto;
+}
+.modal-chat-container {
+    width: 70vw;
+    display: flex;
+    flex-direction: column;
+}
+.modal-chat-title {
+    display: flex;
+    flex-direction: row;
+}
+.modal-chat-content {
+    display: flex;
+    flex-direction: column;
+}
+.modal-chat-textarea {
+    display: flex;
+    flex-direction: row;
+}
+.message-list {
+  display: flex;
+  flex-direction: column;
+  height: 50vh;
+}
+
+.message-item {
+  border-radius: 4px;
+}
+
+.message-text {
+  background-color: green;
+  font-size: 1.5vw;
+}
+
+.modal-input-text-field {
+    width: 55vw;
+}
+/* Style for the message-item container */
+.message-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+/* Style for the message-sender-container for bot */
+.message-sender-container.a {
+  align-self: flex-start;
+}
+
+/* Style for the message-sender-container for user */
+.message-sender-container.b {
+  align-self: flex-end;
+}
+
+/* Style for the message-sender */
+.message-sender {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+/* Style for the message-text-container */
+.message-text-container.a {
+  align-self: flex-start;
+}
+
+/* Style for the message-sender-container for user */
+.message-text-container.b {
+  align-self: flex-end;
+}
+
+/* Style for the message-text */
+.message-text {
+  background-color: #9B1132;
+  padding: 1vw;
+  border-radius: 20px;
+  margin: 1vh;
+  overflow-wrap: break-word; /* 한글 텍스트에 적용되는 속성 */
+  word-break: break-word; /* 영어 텍스트에도 적용되는 속성 */
+}
+
+/* Additional styling for user's message */
+.message-sender-container.b .message-sender {
+  color: #fff;
+}
+
+.message-sender-container.b .message-text {
+  color: #fff;
+}

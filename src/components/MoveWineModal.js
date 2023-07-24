@@ -61,7 +61,7 @@ function Modal({ onClose, wineArray, cellar_id, nowMode, isSmart  }) {
             setAlert(true);
         }
         else {
-            if (isSmart[selectedSpace.row - 1] === true) {
+            if (isSmart[selectedSpace.row] === true) {
                 if (selectedWine.wine_id.type != getModeText(nowMode[selectedSpace.row])) {
                     flag = false;
                     setCondition(true);

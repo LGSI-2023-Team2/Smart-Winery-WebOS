@@ -8,6 +8,7 @@ import { useState, useMemo } from 'react';
 import SettingModal from '../components/SettingModal';
 import WineModal from '../components/WineModal';
 import MoveWineModal from '../components/MoveWineModal';
+import ChatModal from '../components/ChatModal';
 
 import './MainPanel.css'
 import { useEffect } from 'react';
@@ -77,6 +78,33 @@ const EditButton = ({ wine, cellar_id, nowMode, isSmart}) => {
 				cellar_id={cellar_id}
 				nowMode={nowMode}
 				isSmart={isSmart}
+			/>
+		</>
+	);
+};
+
+const ChatButton = () => {
+	const [isChatModalOpen, setChatModalOpen] = useState(false);
+
+	const handleOpenModal = () => {
+		setChatModalOpen(true);
+	};
+
+	const handleCloseModal = () => {
+		setChatModalOpen(false);
+	};
+
+	return (
+		<>
+			<Button
+				onClick={handleOpenModal}
+				backgroundOpacity="transparent"
+				size="small"
+				icon="support"
+			/>
+			<ChatModal
+				isOpen={isChatModalOpen}
+				onClose={handleCloseModal}
 			/>
 		</>
 	);
@@ -267,6 +295,7 @@ const MainPanel = () => {
 		<Panel className="back">
 			<Header title="Wine Cellar Dashboard">
 				<slotAfter>
+					<ChatButton />
 					<EditButton wine={wines} cellar_id={cellarId} nowMode={nowMode} isSmart={isSmart}/>
 					<SettingButton
 						wine={wines}
