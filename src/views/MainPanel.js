@@ -14,8 +14,7 @@ import './MainPanel.css'
 import { useEffect } from 'react';
 import axios from 'axios';
 import { DATABASE_IP } from '../database';
-
-const tempImageUrl = "https://wine21.speedgabia.com/no_image2.jpg";
+import noImage from '../images/noImage.jpg'
 
 const SettingButton = ({ wine, isSmart, setSmart, nowTargetValue, setNowTargetValue, nowMode, setNowMode, cellar_id }) => {
 	const [isModalOpen, setModalOpen] = useState(false);
@@ -157,7 +156,7 @@ const EmptyWinePanel = () => (
 			style={{ boxShadow: 'none' }}
 			component="img"
 			height="100%"
-			image={tempImageUrl}
+			image={noImage}
 			alt="wine"
 		/>
 	</Card>
